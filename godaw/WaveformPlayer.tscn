@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://WaveformPlayer.gd" type="Script" id=1]
+
+[sub_resource type="AudioStreamGenerator" id=1]
+mix_rate = 22050.0
+
+[node name="Player" type="AudioStreamPlayer"]
+stream = SubResource( 1 )
+volume_db = -80.0
+bus = "New Bus"
+script = ExtResource( 1 )
+waveform = "Triangle"
+max_db = -6.0
+limit = 1.0
+ln = true
+attack = 1.0
+decay = 0.25
+sustain = 0.7
+
+[connection signal="tree_entered" from="." to="." method="_on_Player_tree_entered"]
