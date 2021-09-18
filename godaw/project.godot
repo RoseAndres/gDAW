@@ -8,11 +8,25 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Reference",
+"class": "Matrix",
+"language": "GDScript",
+"path": "res://matrix.gd"
+} ]
+_global_script_class_icons={
+"Matrix": ""
+}
+
 [application]
 
 config/name="godaw"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/godaw/plugin.cfg" )
 
 [physics]
 

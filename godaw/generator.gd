@@ -44,7 +44,19 @@ var last_value = null
 var max_wave = null
 
 func _ready():
-	pass
+	var m: Matrix = Matrix.new(2,2)
+	m.fill([
+		[1,2],
+		[3,4]
+	])
+	var n: Matrix = Matrix.new(2,2)
+	n.fill([
+		[5,6],
+		[7,8]
+	])
+	var p: Matrix = Matrix.new(2,2)
+	p.fill(Matrix.mult(m, n))
+	p.print()
 
 func _process(_delta):
 	find_node("FrequencyLabel").text = "%s %s" % [_note(), _octave()]
