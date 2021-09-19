@@ -1,3 +1,4 @@
+extends Reference
 class_name Matrix
 
 # 2d array of matrix contents
@@ -142,7 +143,7 @@ func inverse():
 		if row != n: swap_row(n, row)
 
 		#   3. Multiply the top row by a scalar so that top row's leading entry becomes 1.
-		multiply_row(n, 1.0 / p[n][n])
+		multiply_row(n, 1.0 / p[n][n] if p[n][n] != 0.0 else 0)
 
 		#   4. Add/subtract multiples of the top row to the other rows so that all other entries 
 		#	in the column containing the top row's leading entry are all zero.

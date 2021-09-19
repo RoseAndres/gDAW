@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "Matrix",
 "language": "GDScript",
-"path": "res://matrix.gd"
+"path": "res://addons/godaw/matrix.gd"
 } ]
 _global_script_class_icons={
 "Matrix": ""
@@ -23,6 +23,10 @@ _global_script_class_icons={
 config/name="godaw"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Globals="*res://globals.gd"
 
 [editor_plugins]
 

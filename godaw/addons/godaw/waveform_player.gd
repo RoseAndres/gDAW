@@ -3,36 +3,40 @@ extends AudioStreamPlayer
 
 signal state_change(state)
 
-const NOTES: Dictionary = {
-	"C": 16.35,
-	"C#": 17.32,
-	"D": 18.35,
-	"Eb": 19.45,
-	"E": 20.60,
-	"F": 21.83,
-	"F#": 23.12,
-	"G":  24.50,
-	"G#":  25.96,
-	"A": 27.50,
-	"Bb": 29.14,
-	"B": 30.87
+enum Notes { C, CS, D, EB, E, F, FS, G, GS, A, BB, B }
+const NOTE_FREQUENCIES: Dictionary = {
+	Notes.C: 16.35,
+	Notes.CS: 17.32,
+	Notes.D: 18.35,
+	Notes.EB: 19.45,
+	Notes.E: 20.60,
+	Notes.F: 21.83,
+	Notes.FS: 23.12,
+	Notes.G:  24.50,
+	Notes.GS:  25.96,
+	Notes.A: 27.50,
+	Notes.BB: 29.14,
+	Notes.B: 30.87
 }
 
 enum Waveforms {SINE, TRIANGLE, SQUARE, SAW}
 enum State {ATTACK, DECAY, SUSTAIN, RELEASE, STOPPED = -1}
 
 export(Waveforms) var waveform = Waveforms.SINE
+export(Notes) var note = Notes.C
+export(int, 0, 10) var octave = 4
 
-export(float, -80, 24, 0.01) var max_db = -6.0
-export(float, -80, 24, 0.01) var min_db = -60.0
-export(float, 0, 1, 0.01) var limit = 0.8
+export(bool) var use_hz = false
+export(float, 0, 40000, 0.01) var hz = 220.0
+
+export(float, 0, 1, 0.01) var limit = 0.6
 
 export var linear: bool = false
 
-export(float, 0, 10, 0.01) var attack = 0.5 # in seconds
-export(float, 0, 10, 0.01) var decay = 0.5 # in seconds
-export(float, 0, 1, 0.01) var sustain = 0.5 # sustain amplitude (out of 1.0)
-export(float, 0, 10, 0.01) var release = 0.5 # in seconds
+export(float, 0, 10, 0.01) var attack = 1 # in seconds
+export(float, 0, 10, 0.01) var decay = 1 # in seconds
+export(float, 0, 1, 0.01) var sustain = 1 # sustain amplitude (out of 1.0)
+export(float, 0, 10, 0.01) var release = 1 # in seconds
 
 export(float, 0, 1, 0.05) var attack_shape = 0.5
 export(float, 0, 1, 0.05) var decay_shape = 0.5
@@ -50,11 +54,8 @@ var release_quad # stores the coefficients for the release curve
 
 var state_time: int = 0
 
-var note: int = 48
-
 var playback: AudioStreamPlayback = null # Actual playback stream, assigned in _ready().
 
-var period: float = 22050.0 # Keep the number of samples to mix low, GDScript is not super fast.
 var phase = 0.0
 var was_playing = false
 var was_play = false
@@ -64,7 +65,6 @@ var last_level: float
 
 
 func _ready():
-	
 	real_attack = attack * 1000
 	real_release = release * 1000
 	real_decay = decay * 1000
@@ -73,7 +73,7 @@ func _ready():
 
 func _create_generator():
 	stream = AudioStreamGenerator.new()
-	stream.mix_rate = period # Setting mix rate is only possible before play().
+	stream.mix_rate = Globals.godaw_sample_rate # Setting mix rate is only possible before play().
 	playback = get_stream_playback()
 
 
@@ -81,15 +81,16 @@ func _physics_process(_delta):
 	if not state == State.STOPPED:
 		_fill_buffer()
 		update_state()
-		volume_db = min_db + ((max_db - min_db) * _envelope() * limit)
+		volume_db = Globals.godaw_min_db + ((Globals.godaw_max_db - Globals.godaw_min_db) * _envelope() * limit)
 
 	if was_playing and not play:
-		# this quad must be calculated inline
-		release_quad = _find_quad(
-			Vector2(0.0, last_level),
-			Vector2(real_release / 2.0, last_level * release_shape),
-			Vector2(real_release, 0.0)
-		)
+		if not linear:
+			# this quad must be calculated inline
+			release_quad = _find_quad(
+				Vector2(0.0, last_level),
+				Vector2(real_release / 2.0, last_level * release_shape),
+				Vector2(real_release, 0.0)
+			)
 		set_state(State.RELEASE)
 	elif not was_playing and play:
 		start()
@@ -102,7 +103,7 @@ func finish():
 
 
 func start():
-	volume_db = min_db
+	volume_db = Globals.godaw_min_db
 	_update_envelope()
 	_update_quads()
 	play()
@@ -139,7 +140,6 @@ func should_play():
 func set_state(new_state):
 	state = new_state
 	state_time = _time()
-	print(_current_state_key())
 
 
 func _current_state_key():
@@ -171,20 +171,10 @@ func update_state():
 				set_state(State.STOPPED)
 				_create_generator() # doing this to clear sound buffer
 				phase = 0
-	
-
-
-func _note():
-	return NOTES.keys()[note % NOTES.size()]
-
-
-func _octave():
-# warning-ignore:integer_division
-	return note / NOTES.size()
 
 
 func _frequency():
-	return NOTES[_note()] * pow(2, _octave())
+	return hz if use_hz else NOTE_FREQUENCIES[note] * pow(2, octave)
 
 
 func _time():
@@ -195,7 +185,7 @@ func _fill_buffer():
 	var to_fill = playback.get_frames_available()
 	while to_fill > 0:
 		playback.push_frame(Vector2.ONE * _waveform_sample(phase)) # Audio frames are stereo.
-		phase = fmod(phase + _frequency() / period, 1.0)
+		phase = fmod(phase + _frequency() / Globals.godaw_sample_rate, 1.0)
 		update_state()
 		to_fill -= 1
 
