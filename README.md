@@ -12,7 +12,7 @@ Follow the standard Godot instructions for [downloading and enabling a plugin](h
 GoDAW can be found [here](*coming soon*) in the Godot Asset Library.
 
 ## Configuration
-GoDAW's custom nodes depend on a couple of global variables that must be autoloaded. These values can be configured as you see fit, but the defaults should fit just fine for most use cases.
+GoDAW's custom nodes depend on a couple of global variables that must be autoloaded. These values can be tailored specific to your project, but the defaults should fit just fine for most use cases.
 
 ### Follow the steps below to configure GoDAW:
 1\. Create a new script named `godaw_config.gd` and copy/paste the script provided below (this script is also available at `/godaw/godaw_config.gd` within this repo).
