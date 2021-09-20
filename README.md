@@ -37,11 +37,16 @@ var godaw_sample_rate = 32000
 ## Usage
 
 
+## Roadmap
+Here is a short list of things I'd love to add to the plugin when I've got some spare time:
+1. An in-editor gui for manipulating the ADSR envelope, like most modern DAW software has.
+1. A custom Envelope node that would allow users to apply ADSR envelopes to ANY value on ANY node (this may actually be better as its own independent plugin, since it wouldn't necessarily be related to generating real-time sounds).
+2. A custom LFO node
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
-
 ## License
-Non-propietary use: [GNU LGPLv3](https://choosealicense.com/licenses/lgpl-3.0/).\
-For proprietary uses, please contact the author about purchasing a license.
+[GNU LGPLv3](https://choosealicense.com/licenses/lgpl-3.0/).\
+For proprietary use, please contact me about purchasing a license.

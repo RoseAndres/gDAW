@@ -1,14 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://addons/godaw/waveform_player.gd" type="Script" id=4]
-
-[sub_resource type="AudioStreamGenerator" id=1]
 
 [node name="Main" type="Node"]
 
 [node name="WaveformPlayer" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 1 )
 volume_db = -80.0
 bus = "New Bus"
 script = ExtResource( 4 )
-use_hz = true
