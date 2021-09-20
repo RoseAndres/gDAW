@@ -2,7 +2,7 @@
 A Godot Plugin for generating sound in real-time.
 
 ## Description
-GoDAW is a tidy little plugin that adds its own custom nodes to allow users to generate audio in real-time using [Waveforms](https://en.wikipedia.org/wiki/Waveform) and [ADSR Envelopes](https://en.wikipedia.org/wiki/Envelope_(music)). The custom nodes have many settings that can be used to adjust the sound created. See the [Usage](#usage) section for more info.
+GoDAW is a tidy little plugin that adds its own custom nodes that allow users to generate audio in real-time using [Waveforms](https://en.wikipedia.org/wiki/Waveform) and [ADSR Envelopes](https://en.wikipedia.org/wiki/Envelope_(music)). The custom nodes have many settings that can be used to adjust the sound created. See the [Usage](#usage) section for more info.
 
 ## Getting Started
 To get started with GoDAW, you can either watch the [Getting Started Video](*coming soon*), or continue reading the ReadMe for a text-based walkthrough.
