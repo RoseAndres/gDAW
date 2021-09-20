@@ -73,7 +73,7 @@ func _ready():
 
 func _create_generator():
 	stream = AudioStreamGenerator.new()
-	stream.mix_rate = Globals.godaw_sample_rate # Setting mix rate is only possible before play().
+	stream.mix_rate = GodawConfig.godaw_sample_rate # Setting mix rate is only possible before play().
 	playback = get_stream_playback()
 
 
@@ -81,7 +81,7 @@ func _physics_process(_delta):
 	if not state == State.STOPPED:
 		_fill_buffer()
 		update_state()
-		volume_db = Globals.godaw_min_db + ((Globals.godaw_max_db - Globals.godaw_min_db) * _envelope() * limit)
+		volume_db = GodawConfig.godaw_min_db + ((GodawConfig.godaw_max_db - GodawConfig.godaw_min_db) * _envelope() * limit)
 
 	if was_playing and not play:
 		if not linear:
@@ -103,7 +103,7 @@ func finish():
 
 
 func start():
-	volume_db = Globals.godaw_min_db
+	volume_db = GodawConfig.godaw_min_db
 	_update_envelope()
 	_update_quads()
 	play()
@@ -185,7 +185,7 @@ func _fill_buffer():
 	var to_fill = playback.get_frames_available()
 	while to_fill > 0:
 		playback.push_frame(Vector2.ONE * _waveform_sample(phase)) # Audio frames are stereo.
-		phase = fmod(phase + _frequency() / Globals.godaw_sample_rate, 1.0)
+		phase = fmod(phase + _frequency() / GodawConfig.godaw_sample_rate, 1.0)
 		update_state()
 		to_fill -= 1
 

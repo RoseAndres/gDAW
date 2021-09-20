@@ -26,7 +26,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Globals="*res://globals.gd"
+GodawConfig="*res://godaw_config.gd"
 
 [editor_plugins]
 
