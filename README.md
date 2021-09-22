@@ -35,7 +35,7 @@ var godaw_sample_rate = 32000
 3\. That's it! You're ready to start making some noise!
 
 ## **Documentation**
-See the [Wiki]() to view documentation on the custom nodes added by GoDAW.
+See the [Wiki](https://github.com/RoseAndres/GoDAW/wiki) to view documentation on the custom nodes added by GoDAW.
 
 ## **Roadmap**
 Here is a short list of things I'd like to add to the plugin when I've got some time:
