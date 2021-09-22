@@ -1,29 +1,29 @@
 tool
 extends AudioStreamPlayer
 
-signal state_change(state)
+signal state_changed(from, to, time_in_state)
 
-enum Notes { C, CS, D, EB, E, F, FS, G, GS, A, BB, B }
+enum Note { C, CS, D, EB, E, F, FS, G, GS, A, BB, B }
 const NOTE_FREQUENCIES: Dictionary = {
-	Notes.C: 16.35,
-	Notes.CS: 17.32,
-	Notes.D: 18.35,
-	Notes.EB: 19.45,
-	Notes.E: 20.60,
-	Notes.F: 21.83,
-	Notes.FS: 23.12,
-	Notes.G:  24.50,
-	Notes.GS:  25.96,
-	Notes.A: 27.50,
-	Notes.BB: 29.14,
-	Notes.B: 30.87
+	Note.C: 16.35,
+	Note.CS: 17.32,
+	Note.D: 18.35,
+	Note.EB: 19.45,
+	Note.E: 20.60,
+	Note.F: 21.83,
+	Note.FS: 23.12,
+	Note.G:  24.50,
+	Note.GS:  25.96,
+	Note.A: 27.50,
+	Note.BB: 29.14,
+	Note.B: 30.87
 }
 
-enum Waveforms {SINE, TRIANGLE, SQUARE, SAW}
-enum State {ATTACK, DECAY, SUSTAIN, RELEASE, STOPPED = -1}
+enum Waveform {SINE, TRIANGLE, SQUARE, SAW}
+enum State {STOPPED, ATTACK, DECAY, SUSTAIN, RELEASE}
 
-export(Waveforms) var waveform = Waveforms.SINE
-export(Notes) var note = Notes.C
+export(Waveform) var waveform = Waveform.SINE
+export(Note) var note = Note.C
 export(int, 0, 10) var octave = 4
 
 export(bool) var use_hz = false
@@ -44,6 +44,48 @@ export(float, 0, 1, 0.05) var release_shape = 0.5
 
 export var play: bool = false # for playing in editor
 
+var was_playing = false
+
+var last_level: float
+
+var playback: AudioStreamPlayback = null # Actual playback stream, assigned in _ready().
+
+
+func start() -> void:
+	volume_db = GodawConfig.godaw_min_db
+	_update_envelope()
+	_update_quads()
+	play()
+	set_state(State.ATTACK)
+
+
+func finish() -> void:
+	play = false
+
+
+func is_playing():
+	return play
+
+
+func set_state(new_state) -> void:
+	emit_signal("state_changed", get_state(), State.keys()[new_state], time_in_state())
+	_state = new_state
+	_state_time = _time()
+
+
+func get_state() -> String:
+	return State.keys()[_state]
+
+
+func time_in_state() -> int:
+	return _time() - _state_time
+
+
+func frequency() -> float:
+	return hz if use_hz else NOTE_FREQUENCIES[note] * pow(2, octave)
+
+
+# private
 var _real_attack: float = 0.0 # time to full amplitude (ms)
 var _real_decay: float = 0.0 # time from full amplitude to sustain amplitude (ms)
 var _real_release: float = 0.0 # time from sustain amplitude to silent (ms)
@@ -54,14 +96,9 @@ var _release_quad # stores the coefficients for the release curve
 
 var _state_time: int = 0
 
-var playback: AudioStreamPlayback = null # Actual playback stream, assigned in _ready().
-
 var _phase = 0.0
-var was_playing = false
-var was_play = false
 
 var _state = State.STOPPED
-var last_level: float
 
 
 func _ready():
@@ -96,21 +133,6 @@ func _physics_process(_delta):
 	was_playing = play
 
 
-func is_playing():
-	return play
-
-
-func start():
-	volume_db = GodawConfig.godaw_min_db
-	_update_envelope()
-	_update_quads()
-	play()
-	set_state(State.ATTACK)
-
-
-func finish():
-	play = false
-
 func _update_envelope():
 	_real_attack = attack * 1000
 	_real_decay = decay * 1000
@@ -132,20 +154,6 @@ func _update_quads():
 			Vector2(_real_decay / 2.0, decay_shape),
 			Vector2(_real_decay, sustain)
 		)
-
-
-func set_state(new_state):
-	_state = new_state
-	_state_time = _time()
-
-
-func current_asdr_state():
-	for key in State.keys():
-		if _state == State[key]: return key
-
-
-func time_in_state():
-	return _time() - _state_time
 
 
 func _update_state():
@@ -170,10 +178,6 @@ func _update_state():
 				_phase = 0
 
 
-func frequency():
-	return hz if use_hz else NOTE_FREQUENCIES[note] * pow(2, octave)
-
-
 func _time():
 	return OS.get_ticks_msec()
 
@@ -192,13 +196,13 @@ func _waveform_sample(t: float):
 	var value: float
 	
 	match waveform:
-		Waveforms.SINE: 
+		Waveform.SINE: 
 			value = sin(t)
-		Waveforms.TRIANGLE:
+		Waveform.TRIANGLE:
 			value = 2.0 * abs(2.0 * (t/TAU - floor(t/TAU + 0.5))) - 1.0
-		Waveforms.SAW:
+		Waveform.SAW:
 			value = 2.0 * (t/TAU - floor(t/TAU + 0.5))
-		Waveforms.SQUARE:
+		Waveform.SQUARE:
 			value = sign(sin(t))
 	
 	value = clamp(value, -1.0, 1.0)
@@ -264,8 +268,3 @@ func _find_quad(p1: Vector2, p2: Vector2, p3: Vector2):
 	c.fill(Matrix.mult(a_inv, y))
 	
 	return [c.p[0][0], c.p[1][0], c.p[2][0]]
-	
-
-func _on_Player_tree_entered():
-	if Engine.editor_hint:
-		_ready()
