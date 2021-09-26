@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/waveform_player.svg-3aa79f14b634509c02aa539ded50dc07.stex"
+path="res://.import/godaw_node.svg-87e77b11929dba829c8bc9136aed21a2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/godaw/waveform_player.svg"
-dest_files=[ "res://.import/waveform_player.svg-3aa79f14b634509c02aa539ded50dc07.stex" ]
+source_file="res://addons/godaw/godaw_node.svg"
+dest_files=[ "res://.import/godaw_node.svg-87e77b11929dba829c8bc9136aed21a2.stex" ]
 
 [params]
 

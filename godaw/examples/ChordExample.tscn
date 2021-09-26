@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/godaw/waveform_player.gd" type="Script" id=1]
+[ext_resource path="res://addons/godaw/chord.gd" type="Script" id=2]
+[ext_resource path="res://examples/Button.gd" type="Script" id=3]
+
+[sub_resource type="AudioStreamGenerator" id=1]
+mix_rate = 32000.0
+
+[sub_resource type="AudioStreamGenerator" id=2]
+mix_rate = 32000.0
+
+[sub_resource type="AudioStreamGenerator" id=3]
+mix_rate = 32000.0
+
+[node name="Node" type="Node"]
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Control"]
+margin_right = 12.0
+margin_bottom = 20.0
+toggle_mode = true
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Chord" type="Node" parent="Control/Button"]
+script = ExtResource( 2 )
+
+[node name="WaveformPlayer" type="AudioStreamPlayer" parent="Control/Button/Chord"]
+stream = SubResource( 1 )
+volume_db = -80.0
+script = ExtResource( 1 )
+waveform = 1
+
+[node name="WaveformPlayer2" type="AudioStreamPlayer" parent="Control/Button/Chord"]
+stream = SubResource( 2 )
+volume_db = -80.0
+script = ExtResource( 1 )
+waveform = 1
+note = 4
+
+[node name="WaveformPlayer3" type="AudioStreamPlayer" parent="Control/Button/Chord"]
+stream = SubResource( 3 )
+volume_db = -80.0
+script = ExtResource( 1 )
+waveform = 1
+note = 7
+
+[connection signal="toggled" from="Control/Button" to="Control/Button" method="_on_Button_toggled"]

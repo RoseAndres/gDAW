@@ -12,8 +12,8 @@ const NOTE_FREQUENCIES: Dictionary = {
 	Note.E: 20.60,
 	Note.F: 21.83,
 	Note.FS: 23.12,
-	Note.G:  24.50,
-	Note.GS:  25.96,
+	Note.G: 24.50,
+	Note.GS: 25.96,
 	Note.A: 27.50,
 	Note.BB: 29.14,
 	Note.B: 30.87
@@ -70,8 +70,16 @@ func set_state(state_key: String) -> void:
 	_state_time = _time()
 
 
+func set_audio_bus(audio_bus: String) -> void:
+	set_bus(audio_bus)
+
+
 func get_state() -> String:
 	return State.keys()[_state]
+
+
+func get_class_name() -> String:
+	return "WaveformPlayer"
 
 
 func time_in_state() -> int:
@@ -108,7 +116,7 @@ func _start_emitting() -> void:
 	_update_envelope()
 	_update_quads()
 	play()
-	set_state(State.ATTACK)
+	set_state("ATTACK")
 
 
 func _create_generator() -> void:
@@ -135,7 +143,7 @@ func _physics_process(_delta) -> void:
 				Vector2(_real_release / 2.0, last_level * release_shape),
 				Vector2(_real_release, 0.0)
 			)
-		set_state(State.RELEASE)
+		set_state("RELEASE")
 	elif not was_playing and play:
 		_start_emitting()
 	
@@ -171,18 +179,18 @@ func _update_state() -> void:
 		State.ATTACK:
 			if t >= _real_attack:
 				if _real_decay > 0.0:
-					set_state(State.DECAY)
+					set_state("DECAY")
 				else:
-					set_state(State.SUSTAIN)
+					set_state("SUSTAIN")
 		State.DECAY:
 			if t >= _real_decay:
-				set_state(State.SUSTAIN)
+				set_state("SUSTAIN")
 		State.SUSTAIN:
 			pass
 		State.RELEASE:
 			if t >= _real_release:
 				stop()
-				set_state(State.STOPPED)
+				set_state("STOPPED")
 				_create_generator() # doing this to clear sound buffer
 				_phase = 0
 
