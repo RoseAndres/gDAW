@@ -34,6 +34,9 @@ var sample_rate = 32000
 ## **Documentation**
 See the [Wiki](https://github.com/RoseAndres/gDAW/wiki) to view documentation on the custom nodes added by gDAW.
 
+## **Similar Projects**
+If you are looking for a fully-fledged DAW built with Godot, you may be interested in [GoDAW](https://github.com/QuadCubedStudios/GoDAW).
+
 ## **Roadmap**
 Here is a short list of things I'd like to add to the plugin when I've got some time:
 1. An in-editor gui for manipulating the ADSR envelope, like most modern DAW software has
