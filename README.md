@@ -1,5 +1,5 @@
 # **gDAW**
-A Godot Plugin for generating sound in real-time.
+A Godot Plugin for generating sound in real-time
 
 ## **Description**
 gDAW is a tidy little plugin that adds its own custom nodes that allow users to generate audio in real-time using [Waveforms](https://en.wikipedia.org/wiki/Waveform) and [ADSR Envelopes](https://en.wikipedia.org/wiki/Envelope_(music)). These custom nodes have many settings that can be used to adjust the sound created.
