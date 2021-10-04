@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "Matrix",
 "language": "GDScript",
-"path": "res://addons/godaw/matrix.gd"
+"path": "res://addons/gdaw/matrix.gd"
 } ]
 _global_script_class_icons={
 "Matrix": ""
@@ -20,17 +20,17 @@ _global_script_class_icons={
 
 [application]
 
-config/name="godaw"
+config/name="gdaw"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-GodawConfig="*res://godaw_config.gd"
+GDawConfig="*res://addons/gdaw/gdaw_config.gd"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/godaw/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/gdaw/plugin.cfg" )
 
 [physics]
 

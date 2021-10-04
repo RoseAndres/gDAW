@@ -19,7 +19,7 @@ const NOTE_FREQUENCIES: Dictionary = {
 	Note.B: 30.87
 }
 
-enum Waveform {SINE, TRIANGLE, SQUARE, SAW}
+enum Waveform {SINE, TRIANGLE, SQUARE, SAW, WHITE_NOISE, BROWN_NOISE}
 enum State {STOPPED, ATTACK, DECAY, SUSTAIN, RELEASE}
 
 export(Waveform) var waveform = Waveform.SINE
@@ -47,6 +47,7 @@ export var play: bool = false # for playing in editor
 var was_playing: bool = false
 
 var last_level: float
+var last_value: float = sin(randf() * TAU)
 
 var playback: AudioStreamPlayback = null # Actual playback stream, assigned in _ready().
 
@@ -112,7 +113,7 @@ func _ready() -> void:
 
 
 func _start_emitting() -> void:
-	volume_db = GodawConfig.godaw_min_db
+	volume_db = GDawConfig.min_db
 	_update_envelope()
 	_update_quads()
 	play()
@@ -121,7 +122,7 @@ func _start_emitting() -> void:
 
 func _create_generator() -> void:
 	stream = AudioStreamGenerator.new()
-	stream.mix_rate = GodawConfig.godaw_sample_rate # Setting mix rate is only possible before play().
+	stream.mix_rate = GDawConfig.sample_rate # Setting mix rate is only possible before play().
 	playback = get_stream_playback()
 
 
@@ -133,7 +134,7 @@ func _physics_process(_delta) -> void:
 	if not _state == State.STOPPED:
 		_fill_buffer()
 		_update_state()
-		volume_db = GodawConfig.godaw_min_db + ((GodawConfig.godaw_max_db - GodawConfig.godaw_min_db) * _envelope() * limit)
+		volume_db = GDawConfig.min_db + ((GDawConfig.max_db - GDawConfig.min_db) * _envelope() * limit)
 
 	if was_playing and not play:
 		if not linear:
@@ -203,7 +204,7 @@ func _fill_buffer() -> void:
 	var to_fill = playback.get_frames_available()
 	while to_fill > 0:
 		playback.push_frame(Vector2.ONE * _waveform_sample(_phase)) # Audio frames are stereo.
-		_phase = fmod(_phase + frequency() / GodawConfig.godaw_sample_rate, 1.0)
+		_phase = fmod(_phase + frequency() / GDawConfig.sample_rate, 1.0)
 		_update_state()
 		to_fill -= 1
 
@@ -221,7 +222,12 @@ func _waveform_sample(t: float) -> float:
 			value = 2.0 * (t/TAU - floor(t/TAU + 0.5))
 		Waveform.SQUARE:
 			value = sign(sin(t))
-	
+		Waveform.WHITE_NOISE:
+			value = sin(randf())
+		Waveform.BROWN_NOISE:
+			value = last_value + randf() * 0.2 - 0.1
+			last_value = clamp(value, -1.0, 1.0)
+
 	value = clamp(value, -1.0, 1.0)
 
 	return value

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/godaw/waveform_player.gd" type="Script" id=1]
+[ext_resource path="res://addons/gdaw/waveform_player.gd" type="Script" id=1]
 
 [sub_resource type="AudioStreamGenerator" id=1]
 mix_rate = 32000.0
