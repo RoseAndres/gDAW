@@ -11,25 +11,15 @@ gDAW can be found on the Godot Asset Library [here](https://godotengine.org/asse
 ## **Configuration**
 gDAW's custom nodes depend on a couple of global variables that must be autoloaded. These values can be tailored specific to your project, but the defaults should fit just fine for most use cases.
 
-#### **Follow the steps below to configure gDAW:**
-1\. Create a new script named `gdaw_config.gd` and copy/paste the script provided below (this script is also available at `/gdaw/gdaw_config.gd` within this repo).
-```
-tool
-extends Node
+1\. Create a new [AutoLoad](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html#autoload) in the Project Settings for your project. Give it the name "GDawConfig" (this must match exactly) and set the path to `res://addons/gdaw/gdaw_config.gd` (you can also copy this script and put it wherever you'd like).
 
-# required by gDAW for custom nodes to function
-var max_db: float = -6.0
-var min_db: float = -80.0
-var sample_rate = 32000
-```
+2\. That's it! You're ready to start making some noise!
+
 #### **Global Vars**
+The following global variables can be modified as needed by editing the script of the Autoload that was created during the [Configuration](#configuration) steps:
 - `max_db`: The maximum volume (in decibels) any custom nodes provided by gDAW can reach
 - `min_db`: The minimum volume (in decibels) any custom nodes provided by gDAW can reach
 - `sample_rate`: This is the waveform sample rate that gDAW uses to create sound. Values between `22050` and `32000` are recommended. A higher value will result in a cleaner, smoother sound, while introducing an increasing amount of audio lag, as it requires more CPU to create the audio. The lower the value goes, the more scratchy and static-y the sound will get, due to the "resolution" of the sound being lower.
-
-2\. Create a new [AutoLoad](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html#autoload) in the Project Settings for your project. Give it the name "GDawConfig" (this must match exactly) and make sure that the path is pointing at the script you created in the last step.
-
-3\. That's it! You're ready to start making some noise!
 
 ## **Documentation**
 See the [Wiki](https://github.com/RoseAndres/gDAW/wiki) to view documentation on the custom nodes added by gDAW.
