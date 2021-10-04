@@ -6,7 +6,7 @@ gDAW is a tidy little plugin that adds its own custom nodes that allow users to 
 
 ## **Installation**
 Follow the standard Godot instructions for [downloading and enabling a plugin](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html#installing-a-plugin).
-gDAW can be found [here](*coming soon*) in the Godot Asset Library.
+gDAW can be found on the Godot Asset Library [here](https://godotengine.org/asset-library/asset/1058).
 
 ## **Configuration**
 gDAW's custom nodes depend on a couple of global variables that must be autoloaded. These values can be tailored specific to your project, but the defaults should fit just fine for most use cases.
