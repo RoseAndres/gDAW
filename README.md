@@ -12,22 +12,22 @@ gDAW can be found [here](*coming soon*) in the Godot Asset Library.
 gDAW's custom nodes depend on a couple of global variables that must be autoloaded. These values can be tailored specific to your project, but the defaults should fit just fine for most use cases.
 
 #### **Follow the steps below to configure gDAW:**
-1\. Create a new script named `godaw_config.gd` and copy/paste the script provided below (this script is also available at `/godaw/godaw_config.gd` within this repo).
+1\. Create a new script named `gdaw_config.gd` and copy/paste the script provided below (this script is also available at `/gdaw/gdaw_config.gd` within this repo).
 ```
 tool
 extends Node
 
 # required by gDAW for custom nodes to function
-var gdaw_max_db: float = -6.0
-var gdaw_min_db: float = -80.0
-var gdaw_sample_rate = 32000
+var max_db: float = -6.0
+var min_db: float = -80.0
+var sample_rate = 32000
 ```
 #### **Global Vars**
-- `gdaw_max_db`: The maximum volume (in decibels) any custom nodes provided by gDAW can reach
-- `gdaw_min_db`: The minimum volume (in decibels) any custom nodes provided by gDAW can reach
-- `gdaw_sample_rate`: This is the waveform sample rate that gDAW uses to create sound. Values between `22050` and `32000` are recommended. A higher value will result in a cleaner, smoother sound, while introducing an increasing amount of audio lag, as it requires more CPU to create the audio. The lower the value goes, the more scratchy and static-y the sound will get, due to the "resolution" of the sound being lower.
+- `max_db`: The maximum volume (in decibels) any custom nodes provided by gDAW can reach
+- `min_db`: The minimum volume (in decibels) any custom nodes provided by gDAW can reach
+- `sample_rate`: This is the waveform sample rate that gDAW uses to create sound. Values between `22050` and `32000` are recommended. A higher value will result in a cleaner, smoother sound, while introducing an increasing amount of audio lag, as it requires more CPU to create the audio. The lower the value goes, the more scratchy and static-y the sound will get, due to the "resolution" of the sound being lower.
 
-2\. Create a new [AutoLoad](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html#autoload) in the Project Settings for your project. Give it the name "GodawConfig" (this must match exactly) and make sure that the path is pointing at the script you created in the last step.
+2\. Create a new [AutoLoad](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html#autoload) in the Project Settings for your project. Give it the name "GDawConfig" (this must match exactly) and make sure that the path is pointing at the script you created in the last step.
 
 3\. That's it! You're ready to start making some noise!
 
