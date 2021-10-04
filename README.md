@@ -11,7 +11,7 @@ gDAW can be found on the Godot Asset Library [here](https://godotengine.org/asse
 ## **Configuration**
 gDAW's custom nodes depend on a couple of global variables that must be autoloaded. These values can be tailored specific to your project, but the defaults should fit just fine for most use cases.
 
-1\. Create a new [AutoLoad](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html#autoload) in the Project Settings for your project. Give it the name "GDawConfig" (this must match exactly) and set the path to `res://addons/gdaw/gdaw_config.gd` (you can also copy this script and put it wherever you'd like).
+1\. Create a new [AutoLoad](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html#autoload) in the Project Settings for your project. Give it the name "GDawConfig" (this must match exactly) and set the path to `res://addons/gdaw/gdaw_config.gd`. You can also copy this script and put it wherever you'd like, just be sure that the Autoload's path is pointing at that script.
 
 2\. That's it! You're ready to start making some noise!
 
