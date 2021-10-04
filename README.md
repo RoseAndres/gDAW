@@ -42,7 +42,7 @@ Here is a short list of things I'd like to add to the plugin when I've got some 
 1. An in-editor gui for manipulating the ADSR envelope, like most modern DAW software has
 2. A custom Envelope node that would allow users to apply ADSR envelopes to ANY value on ANY node (this may actually be better as its own independent plugin, since it wouldn't necessarily be related to generating real-time sounds).
 3. A custom LFO node
-4. A Chord node for easily playing multiple waveforms at the same time
+4. A Chord node for easily playing multiple waveforms at the same time (experimental)
 
 
 ## **Contributing**
